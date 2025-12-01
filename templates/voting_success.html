@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vote Success</title>
+    <!-- Use Font Awesome CSS instead of JS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            text-align: center;
+            max-width: 600px;
+            width: 90%;
+        }
+
+        .success-icon {
+            color: #27ae60;
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 15px;
+        }
+
+        p {
+            color: #7f8c8d;
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background-color: #3498db;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #2980b9;
+        }
+
+        .btn-secondary {
+            background-color: #ecf0f1;
+            color: #7f8c8d;
+        }
+
+        .btn-secondary:hover {
+            background-color: #dde4e6;
+        }
+
+        /* Results styling */
+        .results-container {
+            margin-top: 30px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            text-align: left;
+        }
+
+        .results-title {
+            color: #3498db;
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 1.5rem;
+        }
+
+        .result-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .result-item:last-child {
+            border-bottom: none;
+        }
+
+        .total-votes {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid #dee2e6;
+            font-weight: bold;
+            text-align: right;
+        }
+
+        /* Status and Countdown (from vote.html) */
+        .status-card {
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .status-active {
+            background-color: rgba(46, 204, 113, 0.1);
+            color: #27ae60;
+            border-left: 4px solid #27ae60;
+        }
+
+        .status-waiting {
+            background-color: rgba(241, 196, 15, 0.1);
+            color: #f39c12;
+            border-left: 4px solid #f39c12;
+        }
+
+        .status-ended {
+            background-color: rgba(231, 76, 60, 0.1);
+            color: #e74c3c;
+            border-left: 4px solid #e74c3c;
+        }
+
+        .countdown {
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border-radius: 6px;
+        }
+
+        .time-info {
+            text-align: center;
+            color: #7f8c8d;
+            margin-bottom: 25px;
+            font-size: 0.9rem;
+        }
+
+        .no-results-message {
+            background-color: rgba(52, 152, 219, 0.1);
+            color: #3498db;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #3498db;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        /* Compact Winner Announcement */
+        .winner-announcement {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.15) 0%, rgba(255, 215, 0, 0.25) 100%);
+            border: none;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 25px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(255, 215, 0, 0.2);
+        }
+
+        .winner-announcement::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #FFD700, #FFA500, #FFD700);
+        }
+
+        .winner-announcement h3 {
+            color: #2c3e50;
+            margin: 12px 0 4px 0;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .winner-announcement .winner-subtitle {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .winner-announcement i {
+            font-size: 3rem;
+            color: #FFD700;
+            filter: drop-shadow(0 2px 4px rgba(255, 215, 0, 0.4));
+            animation: pulse 2s infinite;
+        }
+
+        .winner-announcement .votes-count {
+            display: inline-block;
+            background-color: rgba(52, 152, 219, 0.1);
+            color: #3498db;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-weight: 600;
+            margin-top: 8px;
+            font-size: 0.85rem;
+        }
+
+        /* Animation for the trophy icon */
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                filter: drop-shadow(0 2px 4px rgba(255, 215, 0, 0.4));
+            }
+
+            50% {
+                transform: scale(1.03);
+                filter: drop-shadow(0 4px 6px rgba(255, 215, 0, 0.5));
+            }
+
+            100% {
+                transform: scale(1);
+                filter: drop-shadow(0 2px 4px rgba(255, 215, 0, 0.4));
+            }
+        }
+
+        /* For tie situations */
+        .winner-announcement.tie {
+            background: linear-gradient(135deg, rgba(200, 200, 200, 0.15) 0%, rgba(200, 200, 200, 0.25) 100%);
+            box-shadow: 0 5px 15px rgba(200, 200, 200, 0.2);
+        }
+
+        .winner-announcement.tie::before {
+            background: linear-gradient(90deg, #95a5a6, #bdc3c7, #95a5a6);
+        }
+
+        .winner-announcement.tie i {
+            color: #95a5a6;
+            filter: drop-shadow(0 2px 4px rgba(149, 165, 166, 0.4));
+        }
+
+        .winner-announcement.tie h3 {
+            color: #7f8c8d;
+        }
+
+        @media (max-width: 500px) {
+            .button-group {
+                flex-direction: column;
+            }
+
+            .winner-announcement {
+                padding: 15px;
+            }
+
+            .winner-announcement h3 {
+                font-size: 1.3rem;
+            }
+
+            .winner-announcement i {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="success-icon">✓</div>
+        <h1>Thank You for Voting!</h1>
+        <p>Your vote has been successfully recorded and counted.</p>
+        <p>Your participation helps shape the future.</p>
+
+        <!-- Winner announcement - Only show when voting has ended -->
+        {% if time_status == 'ended' and winner %}
+        <div class="winner-announcement">
+            <i class="fas fa-trophy"></i>
+            <h3>Winner: {{ winner }}</h3>
+            {% for candidate, votes in results.items() %}
+            {% if candidate == winner %}
+            <div class="votes-count">{{ votes }} votes</div>
+            {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Show Results if voting has ended -->
+        {% if time_status == 'ended' %}
+        <div class="results-container">
+            <h2 class="results-title">Final Results</h2>
+
+            {% for candidate, votes in results.items() %}
+            <div class="result-item">
+                <span>{{ candidate }}</span>
+                <span><strong>{{ votes }}</strong> vote{% if votes != 1 %}s{% endif %}</span>
+            </div>
+            {% endfor %}
+
+            <div class="total-votes">
+                Total Votes: {{ total_votes }}
+            </div>
+        </div>
+        {% else %}
+        <!-- Show message when results are not available yet -->
+        <div class="no-results-message">
+            <p><i class="fas fa-hourglass-half"></i> Results will be available after voting ends.</p>
+            {% if time_status == 'active' and voting_time %}
+            <p>Voting ends in: <strong id="results-timer"></strong></p>
+            {% elif time_status == 'not_started' and voting_time %}
+            <p>Voting starts in: <strong id="results-timer"></strong></p>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        <div class="button-group">
+            <a href="/logout" class="btn btn-secondary">Logout</a>
+            <a href="/vote" class="btn btn-primary">Return to Voting Page</a>
+        </div>
+    </div>
+
+    <script>
+        // Countdown timer functionality
+        // Check if remaining_seconds is defined, otherwise set a default value
+        var remainingSeconds = {{ remaining_seconds | default (0) | tojson }};
+        var timeStatus = "{{ time_status }}";
+
+        function updateCountdown() {
+            if (remainingSeconds > 0) {
+                remainingSeconds--;
+
+                var days = Math.floor(remainingSeconds / (3600 * 24));
+                var hours = Math.floor((remainingSeconds % (3600 * 24)) / 3600);
+                var minutes = Math.floor((remainingSeconds % 3600) / 60);
+                var seconds = Math.floor(remainingSeconds % 60);
+
+                var countdownText = "";
+                if (days > 0) countdownText += days + "d ";
+                if (hours > 0) countdownText += hours + "h ";
+                if (minutes > 0) countdownText += minutes + "m ";
+                countdownText += seconds + "s";
+
+                // Update main timer
+                if (document.getElementById('timer')) {
+                    document.getElementById('timer').textContent = countdownText;
+                }
+
+                // Update results timer
+                if (document.getElementById('results-timer')) {
+                    document.getElementById('results-timer').textContent = countdownText;
+                }
+            } else {
+                // Time's up, reload the page to update status
+                if (timeStatus === 'active' || timeStatus === 'not_started') {
+                    // Only reload if we're not on the ended status
+                    if (timeStatus !== 'ended') {
+                        location.reload();
+                    }
+                }
+            }
+        }
+
+        // Initialize countdown if needed
+        if (remainingSeconds > 0) {
+            updateCountdown(); // Initial call to avoid delay
+            var countdownInterval = setInterval(updateCountdown, 1000);
+        } else {
+            // If no time remaining, show appropriate message
+            if (document.getElementById('timer')) {
+                document.getElementById('timer').textContent = "Time expired";
+            }
+            if (document.getElementById('results-timer')) {
+                document.getElementById('results-timer').textContent = "Time expired";
+            }
+        }
+    </script>
+</body>
+
+</html>
