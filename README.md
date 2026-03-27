@@ -81,20 +81,23 @@ Secure-voting-system
 
 ### 1️⃣ Clone the repository
 
-```bash
-git clone https://github.com/N-y-c-t-o/Secure-voting-system.git
+      git clone https://github.com/N-y-c-t-o/Secure-voting-system.git
+
 
 2️⃣ Navigate to the project
-cd Secure-voting-system
+
+      cd Secure-voting-system
 
 3️⃣ Install dependencies
-pip install -r requirements.txt
+
+      pip install -r requirements.txt
 
 4️⃣ Run the application
-python app.py
 
+      python app.py
+---
 
-💻 Usage
+## 💻 Usage
 
 Start the server.
 
@@ -104,8 +107,9 @@ Cast votes through the interface.
 
 The system securely records and tallies the votes.
 
+---
 
-🔒 Security Goals
+## 🔒 Security Goals
 
 Maintain voter anonymity
 
@@ -115,8 +119,9 @@ Ensure vote integrity
 
 Provide transparent vote counting
 
+---
 
-📈 Future Improvements
+## 📈 Future Improvements
 
 Add blockchain-based vote storage
 
@@ -126,8 +131,9 @@ Improve UI/UX
 
 Deploy the system online
 
+---
 
-🤝 Contributing
+## 🤝 Contributing
 
 Contributions are welcome!
 
@@ -137,13 +143,17 @@ Create a feature branch
 
 Submit a pull request
 
+---
 
-📜 License
+
+## 📜 License
 
 This project is open source and available under the MIT License.
 
+---
 
-👨‍💻 Author
+
+## 👨‍💻 Author
 
 Developed by N-y-c-t-o
 
